@@ -29,4 +29,18 @@ public class Commande implements Serializable {
     public void setResultat(Object resultat) {
         this.resultat = resultat;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(type);
+
+        for (String parametre : parametres) {
+            sb.append("#");
+            sb.append(parametre);
+        }
+
+        return sb.toString();
+    }
 }
