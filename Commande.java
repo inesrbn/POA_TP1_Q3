@@ -15,7 +15,7 @@ public class Commande implements Serializable {
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public String[] getParametres() {
