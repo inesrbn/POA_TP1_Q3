@@ -75,7 +75,7 @@ public class ApplicationServeur {
                     resultat = "Classe " + params[0] + " chargée avec succès.";
                     break;
                 case "creation":
-                    Class<?> classe = Class.forName(params[0]);
+                    Class<?> classe = trouverClasse(params[0]);
                     traiterCreation(classe, params[1]);
                     resultat = "Objet " + params[1] + " instancié avec succès.";
                     break;
@@ -175,7 +175,9 @@ public class ApplicationServeur {
      * s’est faite correctement.
      */
     public void traiterChargement(String nomQualifie) throws Exception {
-        Class.forName(nomQualifie);
+        // Charge la classe depuis le répertoire des classes compilées (et non depuis le classpath du serveur)
+        Class<?> classe = Class.forName(nomQualifie, true, chargeurClasses);
+        classesChargees.put(nomQualifie, classe);
     }
 
     /**
@@ -220,7 +222,7 @@ public class ApplicationServeur {
             if (valStr.startsWith("ID(") && valStr.endsWith(")")) {
                 String id = valStr.substring(3, valStr.length() - 1);
                 argumentsReels[i] = objetsCrees.get(id);
-                classesParametres[i] = Class.forName(typeStr);
+                classesParametres[i] = trouverClasse(typeStr);
             } else {
                 // Types de base
                 classesParametres[i] = obtenirClasseDepuisString(typeStr);
@@ -252,8 +254,20 @@ public class ApplicationServeur {
             case "double": return double.class;
             case "boolean": return boolean.class;
             case "java.lang.String": return String.class;
-            default: return Class.forName(type);
+            default: return trouverClasse(type);
         }
+    }
+
+    /**
+     * Retrouve une classe par son nom qualifié : d'abord parmi les classes déjà chargées
+     * par la commande "chargement", sinon via le chargeur pointant sur le répertoire classes
+     */
+    private Class<?> trouverClasse(String nomQualifie) throws ClassNotFoundException {
+        Class<?> classe = classesChargees.get(nomQualifie);
+        if (classe == null) {
+            classe = Class.forName(nomQualifie, true, chargeurClasses);
+        }
+        return classe;
     }
 
     //
