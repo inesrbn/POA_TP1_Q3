@@ -1,1 +1,10 @@
+# IDE
 .idea/
+
+# Fichiers de build
+build/
+
+# Fichiers d'exécutions
+classes/
+sortie.txt
+traces.txt
