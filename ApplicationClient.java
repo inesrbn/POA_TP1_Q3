@@ -127,7 +127,7 @@ public class ApplicationClient {
     }
 
     /**
-     * programme principal. Prend 4 arguments: 1) “hostname” du serveur, 2) numéro de port,
+     * programme principal. Prend 4 arguments: 1) hostname du serveur, 2) numéro de port,
      * 3) nom fichier commandes, et 4) nom fichier sortie. Cette méthode doit créer une
      * instance de la classe ApplicationClient, l’initialiser, puis exécuter le scénario
      */
